@@ -1,2 +1,2 @@
 digitalocean/*.tfvars
-
+digitalocean/*.terraform
