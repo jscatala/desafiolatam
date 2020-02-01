@@ -19,5 +19,6 @@ Pygments==2.5.2
 pytz==2019.3
 six==1.14.0
 traitlets==4.3.3
+uWSGI==2.0.18
 wcwidth==0.1.8
 Werkzeug==0.16.1
