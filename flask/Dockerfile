@@ -13,11 +13,13 @@ WORKDIR $APP
 EXPOSE 5000
 # Copy the requirements file in order to install
 # Python dependencies
-COPY requirements.txt .
+COPY flask/requirements.txt .
+#uwsgi requirements
+RUN apk add --no-cache gcc libc-dev linux-headers 
 # Install Python dependencies
 RUN pip install -r requirements.txt
 # We copy the rest of the codebase into the image
-COPY . /app
+COPY flask/ /app
 # Finally, we run uWSGI with the ini file we
 # created earlier
 CMD [ "uwsgi", "--ini", "app.ini" ]
