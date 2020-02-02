@@ -24,6 +24,6 @@ variable "size" {
 }
 
 variable "ssh_fp" {
-  type        = list
+  type        = list(string)
   description = "The footprint of ssh key."
 }
