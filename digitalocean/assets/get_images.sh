@@ -4,5 +4,5 @@
 
 token=$(grep do_token ../terraform.tfvars | cut -d"'" -f2)
 
-curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $token" "https://api.digitalocean.com/v2/images?distribution=Centos" | jq '.images | .[] | select(.distribution | contains("CentOS")) '
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $token" "https://api.digitalocean.com/v2/images" | jq '.images | .[] | select(.distribution | contains("CentOS")) '
 
