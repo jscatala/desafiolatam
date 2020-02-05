@@ -1,0 +1,66 @@
+---
+- hosts: nginx
+  become: yes
+  tasks: 
+    - name: Install epel-release
+      yum:
+        name: epel-release
+    - name: Upgrade all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: Install dependencies
+      yum:
+        name: '{{ packages }}'
+      vars:
+        packages:
+          - vim
+          - git
+          - ccze
+          - unzip
+    - name: Download docker script
+      get_url:
+        url: https://get.docker.com/
+        dest: /tmp/docker.sh
+    - name: Change mode of file
+      file: 
+        path: /tmp/docker.sh
+        mode: +x
+    - name: Install docker
+      command: /usr/bin/sh /tmp/docker.sh
+    - name: Enable Docker
+      service:
+        name: docker
+        enabled: yes
+        state: started 
+    - name: Docker status
+      command: service docker status
+    - name: Check Docker
+      command: docker
+    - name: Install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.23.2/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+    - name: Change mode docker-compose
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: +x
+    - name: Check docker-compose
+      command: /usr/local/bin/docker-compose --version 
+    - name: Get repo
+      get_url:
+        url: https://github.com/jscatala/desafiolatam/archive/master.zip
+        dest: /tmp/desafiolatam.zip
+    - name: Create destiny folder
+      file:
+        path: /var/opt/desafiolatam
+        state: directory
+        mode: '0755'
+    - name: Unzip repo
+      unarchive: 
+        src: /tmp/desafiolatam.zip
+        dest: /var/opt/desafiolatam
+        remote_src: yes
+    - name: Run compose
+      command: /usr/local/bin/docker-compose -f /var/opt/desafiolatam/desafiolatam-master/docker-compose.yml up -d
+
